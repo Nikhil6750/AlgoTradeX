@@ -1,25 +1,23 @@
-# Git
-.git
-.gitignore
+# Node
+
+node_modules/
+dist/
+build/
 
 # Python
-__pycache__
-*.py[cod]
-*$py.class
-venv/
+
+**pycache**/
+*.pyc
 .env
 
-# Node
-node_modules/
-npm-debug.log
-dist/
+# OS
+
 .DS_Store
 
-# IDE
-.vscode/
-.idea/
+# Logs
 
-# App Data
-data/
-backtest_results.csv
-backtest_results_trades.csv
+*.log
+
+# IDE
+
+.vscode/

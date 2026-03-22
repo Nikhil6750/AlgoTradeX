@@ -63,44 +63,47 @@ def run_ma_crossover(df: pd.DataFrame, params: dict) -> dict:
         crossed_up = previous["fast_ma"] <= previous["slow_ma"] and current["fast_ma"] > current["slow_ma"]
         crossed_down = previous["fast_ma"] >= previous["slow_ma"] and current["fast_ma"] < current["slow_ma"]
 
+        time_value = current["time"]
+        price_value = float(current["close"])
+
         if crossed_up:
             buy_signals.append({
-                "time": int(current["time"]),
-                "price": float(current["close"]),
+                "time": time_value,
+                "price": price_value,
                 "type": "BUY",
             })
             if position == "SELL" and entry_price is not None and entry_time is not None:
-                pnl = (entry_price - float(current["close"])) / entry_price
+                pnl = (entry_price - price_value) / entry_price
                 trades.append({
-                    "entry_time": int(entry_time),
-                    "exit_time": int(current["time"]),
-                    "entry_price": float(entry_price),
-                    "exit_price": float(current["close"]),
+                    "entry_time": entry_time,
+                    "exit_time": time_value,
+                    "entry_price": entry_price,
+                    "exit_price": price_value,
                     "type": "SELL",
                     "pnl": float(pnl),
                 })
             position = "BUY"
-            entry_price = float(current["close"])
-            entry_time = int(current["time"])
+            entry_price = price_value
+            entry_time = time_value
         elif crossed_down:
             sell_signals.append({
-                "time": int(current["time"]),
-                "price": float(current["close"]),
+                "time": time_value,
+                "price": price_value,
                 "type": "SELL",
             })
             if position == "BUY" and entry_price is not None and entry_time is not None:
-                pnl = (float(current["close"]) - entry_price) / entry_price
+                pnl = (price_value - entry_price) / entry_price
                 trades.append({
-                    "entry_time": int(entry_time),
-                    "exit_time": int(current["time"]),
-                    "entry_price": float(entry_price),
-                    "exit_price": float(current["close"]),
+                    "entry_time": entry_time,
+                    "exit_time": time_value,
+                    "entry_price": entry_price,
+                    "exit_price": price_value,
                     "type": "BUY",
                     "pnl": float(pnl),
                 })
             position = "SELL"
-            entry_price = float(current["close"])
-            entry_time = int(current["time"])
+            entry_price = price_value
+            entry_time = time_value
 
     indicators = {
         "fast_ma": [

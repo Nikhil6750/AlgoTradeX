@@ -111,3 +111,21 @@ def test_run_strategy_alias_returns_candles_and_indexed_setups(monkeypatch):
     payload = response.json()
     assert payload["candles"] == candles
     assert payload["trade_setups"] == [{"index": 1, "type": "BUY", "price": 1.1}]
+    assert payload["backtest_id"] > 0
+
+    detail_response = client.get(f"/backtests/{payload['backtest_id']}")
+    assert detail_response.status_code == 200
+    detail = detail_response.json()
+    assert detail["id"] == payload["backtest_id"]
+    assert detail["dataset_id"] == "demo-dataset"
+    assert detail["strategy_name"] == "Moving Average Crossover"
+    assert detail["trade_setups"] == [{"index": 1, "type": "BUY", "price": 1.1}]
+    assert detail["buy_signals"]
+    assert detail["buy_signals"][0]["type"] == "BUY"
+    assert detail["buy_signals"][0]["time"] == 2
+    assert detail["buy_signals"][0]["index"] == 1
+
+    dashboard_response = client.get("/dashboard/overview")
+    assert dashboard_response.status_code == 200
+    dashboard_payload = dashboard_response.json()
+    assert dashboard_payload["total_backtests"] >= 1

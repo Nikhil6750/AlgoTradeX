@@ -20,6 +20,10 @@ authlib
 httpx
 itsdangerous
 yfinance
-ccxt
-requests
-aiohttp
+# ── Sentiment Intelligence Layer ───────────────────────────────────────────────
+vaderSentiment
+transformers>=4.38
+torch --index-url https://download.pytorch.org/whl/cpu
+newsapi-python
+beautifulsoup4
+python-dotenv

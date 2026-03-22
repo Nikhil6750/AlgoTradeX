@@ -1,6 +1,25 @@
+# Python
 venv/
-node_modules/
 __pycache__/
-*.db
+*.pyc
+
+# Env
 .env
+
+# Node
+node_modules/
+dist/
+
+# OS
 .DS_Store
+
+# Database
+*.db
+
+# Data
+*.csv
+uploads/
+*.json
+
+# Logs
+*.log.DS_Store

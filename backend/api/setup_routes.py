@@ -4,11 +4,14 @@ from pathlib import Path
 from typing import Any, Dict
 
 import pandas as pd
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi import Query as QParam
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 
+from backend.database.database import get_db
 from backend.market_data.csv_dataset_loader import load_dataset_candles
+from backend.services.backtest_service import persist_backtest_run
 from backend.setups.setup_registry import build_setup_config, get_setup, list_setups
 from backend.setups.trade_setup_store import (
     build_trade_setups,
@@ -54,7 +57,7 @@ def get_detected_trade_setups(dataset_id: str, timeframe: str = QParam(None)):
 
 
 @router.post("/run-setup/{setup_id}")
-async def run_setup(setup_id: str, payload: RunSetupRequest):
+async def run_setup(setup_id: str, payload: RunSetupRequest, db: Session = Depends(get_db)):
     try:
         setup = get_setup(setup_id)
         candles = _load_candles(payload.symbol, payload.timeframe)
@@ -83,7 +86,17 @@ async def run_setup(setup_id: str, payload: RunSetupRequest):
     )
     store_trade_setups(payload.symbol, payload.timeframe or "1m", trade_setups)
 
+    backtest = persist_backtest_run(
+        db,
+        dataset_id=payload.symbol,
+        timeframe=payload.timeframe or "1m",
+        config=config,
+        result=result,
+        trade_setups=trade_setups,
+    )
+
     return {
+        "backtest_id": backtest.id,
         "setup_id": setup["id"],
         "setup_name": setup["name"],
         "candles": candles,

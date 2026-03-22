@@ -47,6 +47,7 @@ def build_trade_setups(
 
         setups.append({
             "index": candle_index,
+            "time": timestamp,
             "price": float(reference_price or 0.0),
             "type": signal_type,
         })

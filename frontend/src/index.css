@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #000000;
+    --surface: #111111;
+    --panel: #111111;
+    --card: #111111;
+    --card-border: #222222;
+    --hover-surface: #161616;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent: #ffffff;
+    --border: #222222;
+  }
+
+  .dark {
+    --background: #000000;
+    --surface: #111111;
+    --panel: #111111;
+    --card: #111111;
+    --card-border: #222222;
+    --hover-surface: #161616;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent: #ffffff;
+    --border: #222222;
+  }
+
+  body {
+    @apply text-textPrimary font-sans transition-colors duration-300 ease-in-out;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #000000;
+    color: #ffffff;
+  }
+}
+
+html.dark #root {
+  background: #000000;
+  min-height: 100%;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* ── Button utility ──────────────────────────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    background: #111111;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #222222;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background: #161616;
+    transform: translateY(-1px);
+    box-shadow: none;
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  /* Thin scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .glass-panel {
+    background: #111111;
+    border: 1px solid #222222;
+    border-radius: 12px;
+  }
+}
+
+/* ── Cinematic intro animation ───────────────────────────────────────────── */
+@keyframes intro-cinema {
+  0%        { opacity: 0; }
+  20%       { opacity: 1; }
+  75%       { opacity: 1; }
+  100%      { opacity: 0; }
+}
+
+.intro-cinema {
+  animation: intro-cinema 2.4s ease forwards;
+  pointer-events: none; /* never blocks clicks even during animation */
+}
